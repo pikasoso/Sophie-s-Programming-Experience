@@ -1,3 +1,9 @@
+/*Date:April.13th, 2017
+*Author: Sophie Du
+*Discription:This program uses GUI in java to create a calculator that calculates the hypotenuse of a right angled triangle. 
+User can enter the 2 known sides of a triangle and get its hypotenuse value right away!
+*/
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
