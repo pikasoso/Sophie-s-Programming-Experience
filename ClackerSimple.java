@@ -1,3 +1,11 @@
+/*In this game, players are aiming to roll 2 dices and get all the values between 1-12 with the minimum number of trials. 
+Once a number occurred, it can be covered up on a scoreboard. This game only continues if the following rules are followed:
+Rule 1. If the sum between 2 dice values are less than 7, only individul values are allowed to be covered up. 
+Rule 2. Enter valid input, whether it is letters or numbers
+Rule 3. User can only exit the game after it is finished.
+Enjoy Playing!!!
+*/
+
 import java.util.Random;
 import java.util.Scanner;
 
