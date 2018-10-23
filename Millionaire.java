@@ -1,3 +1,11 @@
+/*Date: Feb 14th, 2017
+*Author:Sophie Du
+*Description: This program is similar to the millionaire television show, where user need to answer 10 questions correctly
+in order to win 1 million dollars. 3 lifelines are available throughout the game, each type can only be used once. Once all lifelines 
+are used, the player need to answer all questions by themselves. If 5 or more questions are answered correctly, the player can choose 
+to exit the game with the current amount of money they earned only if a question is answered correctly. 
+If a question is answered incorrectly, no money is awared. 
+*/
 import java.util.Random;
 import java.util.Scanner;
 
@@ -8,6 +16,7 @@ public class Millionaire {
 			{ "What is an example of ionic compound?\na) H2O\nb) P2O5\nc) NaCl\nd) PCl4",
 					"What is an example of molecule?\na) H2O\nb) MgCl2\nc) NaCl\nd) KOH" },
 			{ "What is an example of diatomic molecule?\n a)Cl2\n b)H2O\n c)HCl\n d)P2O5",
+		
 					"What is not an example of diatomic molecule?\n a)Cl2\n b)H2\n c)N2\n d)P2O5" },
 			{ "What is an example of a compound/molecule that has a pH > 7?\n a)KCl\n b)NaOH\n c)H2SO4\n d)Cl2",
 					"What is an example of a compound/molecule that has a pH = 7?\n a)KCl\n b)NaOH \n c)H2SO4\n d)HCl" },
