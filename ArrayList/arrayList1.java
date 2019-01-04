@@ -1,5 +1,4 @@
 /*Name: Sophie 
- * Teacher: Mrs. A
  * Description: Level 1
  * Date: Sept7, 2018
  */
