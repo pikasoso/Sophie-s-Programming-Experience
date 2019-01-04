@@ -1,0 +1,17 @@
+package Animal;
+public class TestSuperanimal{
+  public static void main(String []args){
+    Superanimal pika = new Superanimal ("pika", "yellow",true,true,true,true,false,true);
+    Superanimal cat = new Superanimal ("fat", "white",true,true,true,true,true,false);
+    
+    System.out.println(pika.fly());
+    System.out.println(cat.fly());
+    
+    System.out.println(pika.teleport("toronto"));
+    System.out.println(cat.teleport("toronto"));
+    
+    System.out.println();
+    
+    
+  }
+  
