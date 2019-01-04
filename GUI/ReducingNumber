@@ -1,0 +1,43 @@
+package gui1;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
+public class Gui2 {
+ public static void main(String[] args) {
+
+  JFrame jf = new JFrame("Reduce Button Number");
+  jf.setSize(400, 200); 
+  jf.setLocationRelativeTo(null); 
+  jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); 
+
+
+  JPanel panel = new JPanel(); 
+
+  for (int i = 0; i < 5; i++) {
+   for (int j = 0; j < 5; j++) {
+    int randomNum = (int) (1 + Math.random() * 6);
+    final JButton btn = new JButton(String.valueOf(randomNum));
+    btn.addActionListener(new ActionListener() {
+     public void actionPerformed(ActionEvent e) {
+      int btnNum = Integer.parseInt(btn.getText());
+      btnNum--;
+      btn.setText(String.valueOf(btnNum));
+     }
+    });
+    panel.add(btn);   
+   }
+
+  }
+
+  jf.setContentPane(panel);
+
+  jf.setVisible(true);
+ }
+
+}
