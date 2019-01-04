@@ -1,4 +1,12 @@
-package NEW2Connect4;
+/*
+  Author: Sophie
+  Description: This program displays a graphical user interphase for users to have a realistic gaming experiences. 
+  User can choose to play with another user or with the computer. Computer vs. User version is designed with an AI 
+  that uses the concept of minimax to prevent user from becoming the winner easily. 
+  */
+
+
+package Connect4;
 
 import javax.swing.*;
 
