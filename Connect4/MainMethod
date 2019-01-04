@@ -1,0 +1,9 @@
+package Connect4;
+
+public class MainMethod {
+	public static void main(String[] args) { 
+
+	    new Connect4();
+	       
+ }
+}
