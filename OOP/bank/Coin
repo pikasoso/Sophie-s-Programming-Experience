@@ -1,0 +1,18 @@
+package bank;
+
+public abstract class Coin {
+  
+  
+  
+  public abstract void getValue();
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}
