@@ -1,0 +1,419 @@
+%Name: Picture Assignment
+%Author: Sophie
+%Date: April 11, 2017
+%Description: This program draws a picture depending on user's preferences.
+var shift : int := -4
+var x1 : int := 85
+var x2 : int := 55
+var x3 : int := 160
+var x4 : int := 90
+var x11 : int := 75
+var x22 : int := 98
+var x33 : int := 80
+var x44 : int := 100
+var x111 : int := 220
+var x112 : int := 270
+var x113 : int := 205
+var x114 : int := 260
+var x115 : int := 307
+var shift1 : int := 2
+
+
+setscreen ("graphics:640:480:")
+
+var season, day, boat : string
+put "Which season do you want?"
+put "a) spring"
+put "b) fall"
+get season
+put "Do you want the picture to be during the daytime or at the night?"
+put "a) daytime"
+put "b) nighttime"
+get day
+cls
+process music
+	loop
+    	Music.PlayFile ("lake.wav")
+	end loop
+end music
+fork music
+process music1
+	loop
+    	play ("G G G G E C")
+    	play ("G G G G E C")
+    	play ("C C C C A F")
+    	play ("C C C B A G")
+    	play ("G A G")
+    	play ("G F E")
+    	play ("E D C")
+    	play ("G G G A G E C")
+    	play ("G G G G E C")
+    	play ("C C C D C A F")
+    	play ("C C C B A G")
+    	play ("G A G")
+    	play ("G F E")
+    	play ("E D C")
+	end loop
+end music1
+fork music1
+
+if day = "a" then
+	colourback (100)
+	cls
+	drawarc (220, 365, 28, 22, 25, 203, white) %outline and colour of clouds
+	drawarc (270, 365, 28, 22, 13, 170, white)
+	drawarc (205, 340, 28, 18, 107, 26, white)
+	drawarc (260, 342, 28, 18, 198, 29, white)
+	drawarc (307, 356, 23, 18, 197, 120, white)
+	drawfill (220, 365, white, white)
+
+	drawarc (420, 265, 28, 22, 25, 203, white)
+	drawarc (470, 265, 28, 22, 13, 170, white)
+	drawarc (405, 240, 28, 18, 107, 26, white)
+	drawarc (460, 242, 28, 18, 198, 29, white)
+	drawarc (507, 256, 23, 18, 197, 120, white)
+	drawfill (420, 265, white, white)
+	drawarc (120, 265, 28, 22, 25, 203, white)
+	drawarc (170, 265, 28, 22, 13, 170, white)
+	drawarc (105, 240, 28, 18, 107, 26, white)
+	drawarc (160, 242, 28, 18, 198, 29, white)
+	drawarc (207, 256, 23, 18, 197, 120, white)
+	drawfill (120, 265, white, white)
+	drawoval (60, 340, 40, 40, yellow) %the sun and its shining rays
+	drawfill (60, 340, yellow, yellow)
+	drawline (60, 290, 60, 270, 42)
+	drawline (110, 340, 135, 340, 42)
+	drawline (60, 385, 60, 400, 42)
+	drawline (100, 300, 120, 280, 42)
+	drawline (100, 380, 120, 400, 42)
+	drawline (15, 340, 1, 340, 42)
+	drawline (20, 300, 1, 280, 42)
+	drawline (20, 380, 1, 400, 42)
+	drawfillbox (0, 0, 640, 20, 76) %the first colour of the lake
+	drawfillbox (0, 21, 640, 40, 77) %the second colour of the lake
+	drawfillbox (0, 41, 640, 80, 53) %the third colour of the lake
+	Draw.FillArc (320, 80, 130, 40, 0, 180, 50) %the island in the middle
+	Draw.FillArc (580, 80, 90, 30, 0, 180, 73) %the island near the right
+	drawfillbox (340, 100, 420, 180, 42) %the basic shape of a orange house
+	drawline (320, 180, 440, 180, 79) %the outline of the triangular roof
+	drawline (320, 180, 380, 240, 79)
+	drawline (440, 180, 380, 240, 79)
+	drawfill (380, 230, 79, 79) %the colour of the roof
+	drawfillbox (350, 140, 370, 160, 36) %the windows of the orange house
+	drawfillbox (390, 140, 410, 160, 39)
+	drawfillbox (370, 100, 390, 130, 38) %the door of the orange house
+	drawfillbox (275, 145, 320, 115, 60) %the hidden part of the small house
+	drawfillbox (280, 120, 290, 138, 34) %the windows of the small house
+	drawline (285, 180, 310, 180, 35) %the outline of the roof of the small house
+	drawline (285, 180, 270, 145, 35)
+	drawline (310, 180, 325, 145, 35)
+	drawline (270, 145, 325, 145, 35)
+	drawfill (290, 165, 35, 35)
+	drawfillbox (305, 120, 315, 138, 34) %the roof of the small house
+	drawarc (520, 285, 30, 30, 25, 103, black) %birds
+	drawarc (519, 285, 30, 30, 25, 103, black)
+	drawarc (550, 270, 30, 30, 25, 103, black)
+	drawarc (549, 270, 30, 30, 25, 103, black)
+	drawarc (275, 215, 30, 30, 25, 123, black)
+	drawarc (276, 215, 30, 30, 25, 123, black)
+	drawarc (318, 205, 30, 30, 25, 125, black)
+	drawarc (319, 205, 30, 30, 25, 125, black)
+
+	loop %cloud, shining ray animation and season choice
+
+    	if season = "b" then
+        	Draw.FillArc (600, 180, 30, 65, 290, 250, 43) %the colour and outline of the small tree
+        	drawfillbox (590, 108, 610, 178, 114) %the colour and outline of the tree branch
+        	drawfillbox (220, 95, 200, 170, 114)
+        	drawline (240, 170, 180, 170, 66) %the first layer the tall tree
+        	drawline (240, 170, 225, 200, 66)
+        	drawline (195, 200, 180, 170, 66)
+        	drawline (195, 200, 225, 200, 66)
+        	drawfill (200, 190, 66, 66) %the colour of the tall tree
+        	drawline (240, 200, 180, 200, 66) %the second layer of the tall tree
+        	drawline (240, 200, 225, 230, 66)
+        	drawline (195, 230, 180, 200, 66)
+        	drawline (225, 230, 195, 230, 66)
+        	drawfill (230, 210, 66, 66) %the colour of the tall tree
+        	drawline (180, 230, 240, 230, 66) %the third layer of the tall tree
+        	drawline (180, 230, 210, 270, 66)
+        	drawline (240, 230, 210, 270, 66)
+        	drawfill (190, 240, 66, 66) %the colour of the tall tree
+
+    	elsif season = "a" then
+        	Draw.FillArc (600, 180, 30, 65, 290, 250, 46) %the colour and outline of the small tree
+        	drawfillbox (590, 108, 610, 178, 160) %the colour and outline of the tree branch
+        	drawfillbox (220, 95, 200, 170, 160)
+        	drawline (240, 170, 180, 170, 48) %the first layer the tall tree
+        	drawline (240, 170, 225, 200, 48)
+        	drawline (195, 200, 180, 170, 48)
+        	drawline (195, 200, 225, 200, 48)
+        	drawfill (200, 190, 48, 48) %the colour of the tall tree
+        	drawline (240, 200, 180, 200, 48) %the second layer of the tall tree
+        	drawline (240, 200, 225, 230, 48)
+        	drawline (195, 230, 180, 200, 48)
+        	drawline (225, 230, 195, 230, 48)
+        	drawfill (230, 210, 48, 48) %the colour of the tall tree
+        	drawline (180, 230, 240, 230, 48) %the third layer of the tall tree
+        	drawline (180, 230, 210, 270, 48)
+        	drawline (240, 230, 210, 270, 48)
+        	drawfill (190, 240, 48, 48) %the colour of the tall tree
+    	else
+    	end if
+    	drawline (60, 290, 60, 270, 42)
+    	delay (80)
+    	drawline (60, 290, 60, 270, 100)
+    	drawline (60, 290 - 5, 60, 270 + 5, 42)
+    	drawline (110, 340, 135, 340, 42)
+    	delay (80)
+    	drawline (110, 340, 135, 340, 100)
+    	drawline (110 + 5, 340, 135 - 5, 340, 42)
+    	drawline (60, 385, 60, 400, 42)
+    	delay (80)
+    	drawline (60, 385, 60, 400, 100)
+    	drawline (60, 385 + 5, 60, 400 - 5, 42)
+    	drawline (100, 300, 120, 280, 42)
+    	delay (80)
+    	drawline (100, 300, 120, 280, 100)
+    	drawline (100 + 5, 300 - 5, 120 - 5, 280 + 5, 42)
+    	drawline (100, 380, 120, 400, 42)
+    	delay (80)
+    	drawline (100, 380, 120, 400, 100)
+    	drawline (100 + 3, 380 + 3, 120 - 3, 400 - 3, 42)
+    	drawline (15, 340, 1, 340, 42)
+    	delay (80)
+    	drawline (15, 340, 1, 340, 100)
+    	drawline (15 - 3, 340, 1 + 3, 340, 42)
+
+    	drawline (20, 300, 1, 280, 42)
+    	delay (80)
+    	drawline (20, 300, 1, 280, 100)
+    	drawline (20 - 5, 300 - 5, 1 + 5, 280 + 5, 42)
+    	drawline (20, 380, 1, 400, 42)
+    	delay (80)
+    	drawline (20, 380, 1, 400, 100)
+    	drawline (20 - 3, 380 + 3, 1 + 3, 400 - 3, 42)
+    	for i : 1 .. 20
+        	drawarc (x111, 365, 28, 22, 25, 203, white)   %cloud animation
+        	drawarc (x112, 365, 28, 22, 13, 170, white)
+        	drawarc (x113, 340, 28, 18, 107, 26, white)
+        	drawarc (x114, 342, 28, 18, 198, 29, white)
+        	drawarc (x115, 356, 23, 18, 197, 120, white)
+        	drawfill (x111, 365, white, white)
+        	delay (20)
+        	drawarc (x111, 365, 28, 22, 25, 203, 100)
+        	drawarc (x112, 365, 28, 22, 13, 170, 100)
+        	drawarc (x113, 340, 28, 18, 107, 26, 100)
+        	drawarc (x114, 342, 28, 18, 198, 29, 100)
+        	drawarc (x115, 356, 23, 18, 197, 120, 100)
+        	drawfill (x111, 365, 100, 100)
+        	x111 := x111 + shift1
+        	x112 := x112 + shift1
+        	x113 := x113 + shift1
+        	x114 := x114 + shift1
+        	x115 := x115 + shift1
+
+        	drawline (x1, 80, x2, 95, 31) %the outline of the ship
+        	drawline (x2, 95, x3, 95, 31)
+        	drawline (x3, 95, x3, 80, 31)
+        	drawline (x1, 80, x3, 80, 31)
+        	drawfill (x4, 90, 31, 31)
+        	delay (20)
+        	drawline (x1, 80, x2, 95, 100) %the outline of the ship
+        	drawline (x2, 95, x3, 95, 100)
+        	drawline (x3, 95, x3, 80, 100)
+        	drawline (x1, 80, x3, 80, 100)
+        	drawfill (x4, 90, 100, 100)
+        	x1 := x1 + shift
+        	x2 := x2 + shift
+        	x3 := x3 + shift
+        	x4 := x4 + shift
+
+        	drawline (x11, 96, x22, 120, 12) %moving red flag
+        	drawline (x22, 120, x22, 96, 12)
+        	drawline (x11, 96, x22, 96, 12)
+        	drawfill (x33, 100, 12, 12)
+        	delay (20)
+        	drawline (x11, 96, x22, 120, 100)
+        	drawline (x22, 120, x22, 96, 100)
+        	drawline (x11, 96, x22, 96, 100)
+        	drawfill (x33, 100, 100, 100)
+
+
+        	x11 := x11 + shift
+        	x22 := x22 + shift
+        	x33 := x33 + shift
+        	x44 := x44 + shift
+    	end for
+	end loop
+
+elsif day = "b" then
+	colourback (104) %colour background
+	cls
+	drawarc (65, 310, 50, 50, 76, 327, 14) %outline of the moon
+	drawarc (90, 320, 40, 40, 105, 295, 14)
+	drawfill (55, 300, 14, 14) %colour of the moon
+
+	drawfillbox (0, 0, 640, 20, 78) %the first colour of the lake
+	drawfillbox (0, 21, 640, 40, 54) %the second colour of the lake
+	drawfillbox (0, 41, 640, 80, 33) %the third colour of the lake
+	Draw.FillArc (320, 80, 130, 40, 0, 180, 119) %the island in the middle
+	Draw.FillArc (580, 80, 90, 30, 0, 180, 118) %the island near the right
+	drawfillbox (340, 100, 420, 180, 42) %the basic shape of a orange house
+	drawline (320, 180, 440, 180, 79) %the outline of the triangular roof
+	drawline (320, 180, 380, 240, 79)
+	drawline (440, 180, 380, 240, 79)
+	drawfill (380, 230, 79, 79) %the colour of the roof
+	drawfillbox (350, 140, 370, 160, 36) %the windows of the orange house
+	drawfillbox (390, 140, 410, 160, 39)
+	drawfillbox (370, 100, 390, 130, 38) %the door of the orange house
+	drawfillbox (275, 145, 320, 115, 60) %the hidden part of the small house
+	drawfillbox (280, 120, 290, 138, 34) %the windows of the small house
+	drawline (285, 180, 310, 180, 35) %the outline of the roof of the small house
+	drawline (285, 180, 270, 145, 35)
+	drawline (310, 180, 325, 145, 35)
+	drawline (270, 145, 325, 145, 35)
+	drawfill (290, 165, 35, 35)
+	drawfillbox (305, 120, 315, 138, 34) %the roof of the small house
+
+
+
+	drawline (85, 80, 55, 95, 31) %the outline of the ship
+	drawline (55, 95, 160, 95, 31)
+	drawline (160, 95, 160, 80, 31)
+	drawline (85, 80, 160, 80, 31)
+	drawfill (90, 90, 31, 31) %the colour of the shape
+
+	drawline (75, 96, 98, 120, 12) %the outline and the colour of the red flag
+	drawline (98, 120, 98, 96, 12)
+	drawline (75, 96, 98, 96, 12)
+	drawfill (80, 100, 12, 12)
+
+	drawarc (520, 285, 30, 30, 25, 103, black) %birds
+	drawarc (519, 285, 30, 30, 25, 103, black)
+	drawarc (550, 270, 30, 30, 25, 103, black)
+	drawarc (549, 270, 30, 30, 25, 103, black)
+	drawarc (275, 215, 30, 30, 25, 123, black)
+	drawarc (276, 215, 30, 30, 25, 123, black)
+	drawarc (318, 205, 30, 30, 25, 125, black)
+	drawarc (319, 205, 30, 30, 25, 125, black)
+
+
+	loop %stars animation and season choice
+
+    	if season = "b" then
+        	Draw.FillArc (600, 180, 30, 65, 290, 250, 43) %the colour and outline of the small tree
+        	drawfillbox (590, 108, 610, 178, 114) %the colour and outline of the tree branch
+        	drawfillbox (220, 95, 200, 170, 114)
+        	drawline (240, 170, 180, 170, 66) %the first layer the tall tree
+        	drawline (240, 170, 225, 200, 66)
+        	drawline (195, 200, 180, 170, 66)
+        	drawline (195, 200, 225, 200, 66)
+        	drawfill (200, 190, 66, 66) %the colour of the tall tree
+        	drawline (240, 200, 180, 200, 66) %the second layer of the tall tree
+        	drawline (240, 200, 225, 230, 66)
+        	drawline (195, 230, 180, 200, 66)
+        	drawline (225, 230, 195, 230, 66)
+        	drawfill (230, 210, 66, 66) %the colour of the tall tree
+        	drawline (180, 230, 240, 230, 66) %the third layer of the tall tree
+        	drawline (180, 230, 210, 270, 66)
+        	drawline (240, 230, 210, 270, 66)
+        	drawfill (190, 240, 66, 66) %the colour of the tall tree
+    	elsif season = "a" then
+        	Draw.FillArc (600, 180, 30, 65, 290, 250, 46) %the colour and outline of the small tree
+        	drawfillbox (590, 108, 610, 178, 160) %the colour and outline of the tree branch
+        	drawfillbox (220, 95, 200, 170, 160)
+        	drawline (240, 170, 180, 170, 48) %the first layer the tall tree
+        	drawline (240, 170, 225, 200, 48)
+        	drawline (195, 200, 180, 170, 48)
+        	drawline (195, 200, 225, 200, 48)
+        	drawfill (200, 190, 48, 48) %the colour of the tall tree
+        	drawline (240, 200, 180, 200, 48) %the second layer of the tall tree
+        	drawline (240, 200, 225, 230, 48)
+        	drawline (195, 230, 180, 200, 48)
+        	drawline (225, 230, 195, 230, 48)
+        	drawfill (230, 210, 48, 48) %the colour of the tall tree
+        	drawline (180, 230, 240, 230, 48) %the third layer of the tall tree
+        	drawline (180, 230, 210, 270, 48)
+        	drawline (240, 230, 210, 270, 48)
+        	drawfill (190, 240, 48, 48) %the colour of the tall tree
+    	else
+    	end if
+    	drawfillstar (120, 330, 140, 310, white) %filled stars
+    	delay (50)
+    	drawfillstar (120, 330, 140, 310, 104)
+    	drawfillstar (120 + 2, 330, 140 + 2, 310, white)
+    	drawfillstar (220, 310, 200, 290, white)
+    	delay (50)
+    	drawfillstar (220, 310, 200, 290, 104)
+    	drawfillstar (220 - 2, 310, 200 - 2, 290, white)
+    	drawfillstar (320, 300, 340, 280, white)
+    	delay (50)
+    	drawfillstar (320, 300, 340, 280, 104)
+    	drawfillstar (320, 300 + 3, 340, 280 + 3, white)
+
+    	drawfillstar (280, 360, 295, 345, white)
+    	delay (50)
+    	drawfillstar (280, 360, 295, 345, 104)
+    	drawfillstar (280, 360 + 3, 295, 345 + 3, white)
+    	drawfillstar (380, 378, 400, 369, white)
+    	delay (50)
+    	drawfillstar (380, 378, 400, 369, 104)
+    	drawfillstar (380 - 2, 378, 400 - 2, 369, white)
+    	drawfillstar (410, 317, 420, 325, white)
+    	delay (50)
+    	drawfillstar (410, 317, 420, 325, 104)
+    	drawfillstar (410, 317 + 2, 420, 325 + 2, white)
+    	drawfillstar (500, 305, 525, 322, white)
+    	delay (50)
+    	drawfillstar (500, 305, 525, 322, 104)
+    	drawfillstar (500 + 2, 305, 525 + 2, 322, white)
+    	drawfillstar (475, 355, 485, 365, white)
+    	delay (50)
+    	drawfillstar (475, 355, 485, 365, 104)
+    	drawfillstar (475, 355 - 2, 485, 365 - 2, white)
+    	drawfillstar (590, 270, 610, 285, white)
+    	delay (50)
+    	drawfillstar (590, 270, 610, 285, 104)
+    	drawfillstar (590 + 1, 270, 610 + 1, 285, white)
+    	drawfillstar (600, 350, 615, 360, white)
+    	delay (50)
+    	drawfillstar (600, 350, 615, 360, 104)
+    	drawfillstar (600, 350 - 2, 615, 360 - 2, white)
+    	for i : 1 .. 20
+        	drawline (x1, 80, x2, 95, 31) %the outline of the ship
+        	drawline (x2, 95, x3, 95, 31)
+        	drawline (x3, 95, x3, 80, 31)
+        	drawline (x1, 80, x3, 80, 31)
+        	drawfill (x4, 90, 31, 31)
+        	delay (20)
+        	drawline (x1, 80, x2, 95, 104) %the outline of the ship
+        	drawline (x2, 95, x3, 95, 104)
+        	drawline (x3, 95, x3, 80, 104)
+        	drawline (x1, 80, x3, 80, 104)
+        	drawfill (x4, 90, 104, 104)
+        	x1 := x1 + shift
+        	x2 := x2 + shift
+        	x3 := x3 + shift
+        	x4 := x4 + shift
+
+        	drawline (x11, 96, x22, 120, 12)
+        	drawline (x22, 120, x22, 96, 12)
+        	drawline (x11, 96, x22, 96, 12)
+        	drawfill (x33, 100, 12, 12)
+        	delay (20)
+        	drawline (x11, 96, x22, 120, 104)
+        	drawline (x22, 120, x22, 96, 104)
+        	drawline (x11, 96, x22, 96, 104)
+        	drawfill (x33, 100, 104, 104)
+
+
+        	x11 := x11 + shift
+        	x22 := x22 + shift
+        	x33 := x33 + shift
+        	x44 := x44 + shift
+    	end for
+	end loop
+
+end if
+
