@@ -2,7 +2,9 @@
 
 /*Name:Sophie DU
  * Teacher: Mr.chu;
- * Description: baseball game
+ * Description: This program records score for baseball games in two ways:
+1. Direct User Input and print the final score onto console
+2. Print the final scoreboard into a text file for convenient downloading 
  */
 
 import java.util.Scanner;
