@@ -1,0 +1,51 @@
+package Person;
+import java.util.Scanner;
+
+public class Person{
+  static Scanner sc = new Scanner (System.in);
+  private String name;
+  private String address;
+  
+  
+  public Person(String defaultName,String defaultAddress) 
+  { //This is the constructor
+    name = defaultName;
+    address = defaultAddress;
+  }
+  
+  public Person() 
+  { //This is the constructor
+    address = "default";
+    name = "default";
+  }
+  
+  public String getName(){
+    return name;
+  }
+  
+  public String getAddress(){
+    return address;
+  }
+  
+  public void setAddress(String newAddress){
+    address = newAddress;
+  }
+  
+  public String toString (){
+    
+    return ("Person [name =" + name +", address=" + address+"]");
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}
