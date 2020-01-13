@@ -1,0 +1,557 @@
+;; Put your header here
+;;;
+;;****************
+;; Sophie Du (20816400)
+;; CS FALL 2019
+;; Assignment 8 03
+;;****************
+;;
+
+(require "filesystem-lib.rkt")
+
+;; A Filesystem Object (FSObject) is one of:
+;; * File
+;; * Dir
+
+(define-struct file (name size owner))
+;; A File is a (make-file Str Nat Sym)
+
+(define-struct dir (name owner contents))
+;; A Dir is a (make-dir Str Sym (listof FSObject))
+
+
+(define example-fs
+  (make-dir "root" 'root
+            (list
+             (make-dir "Dan" 'dan
+                       (list (make-file "log.txt" 768 'dan)
+                             (make-file "profile.jpg" 60370 'dan)
+                             (make-dir "music" 'dan
+                                       (list (make-file "Thelonius Monk.mp3" 92227584 'dan)))))
+             (make-dir "Slides" 'teaching
+                       (list (make-dir "cs135" 'teaching
+                                       (list (make-file "01-intro.pdf" 72244 'teaching)
+                                             (make-file "11-trees.pdf" 123124 'teaching)
+                                             (make-dir "system" 'root
+                                                       (list (make-dir "logs" 'teaching empty)))))))
+             (make-file "vmlinuz" 30 'root))))
+
+(define example-fs2
+  (make-dir "root" 'root
+            (list
+             (make-dir "Dan" 'dan
+                       (list (make-file "log.txt" 768 'dan))))))
+(define example-fs3
+  (make-dir "root" 'root
+            (list
+             (make-dir "Dan" 'dan
+                       (list (make-file "log.txt" 768 'dan)
+                             (make-file "profile.jpg" 60370 'dan)
+                             (make-dir "music" 'dan
+                                       (list (make-file "Thelonius Monk.mp3" 92227584 'dan)))))
+             (make-file "hahahaha" 30 'root)
+             (make-dir "Slides" 'teaching
+                       (list (make-dir "cs135" 'teaching
+                                       (list (make-file "01-intro.pdf" 72244 'teaching)
+                                             (make-file "11-trees.pdf" 123124 'teaching)
+                                             (make-dir "system" 'root
+                                                       (list (make-dir "logs" 'teaching empty)))))))
+             (make-file "vmlinuz" 30 'root))))
+
+(define example-fs4
+  (make-dir "root" 'root
+            (list
+             (make-file "Dan" 623 'dan)
+             (make-file "log.txt" 768 'dan)
+             (make-file "log.txt" 768 'dan)
+             (make-file "log.txt" 768 'dann))))
+
+(define example-fs5
+  (make-dir "root" 'root
+            (list
+             (make-dir "Dan" 'dan
+                       (list (make-file "log.txt" 768 'dan)
+                             (make-file "profile.jpg" 60370 'dan)
+                             (make-dir "music" 'dan
+                                       (list (make-file "Thelonius Monk.mp3" 92227584 'dannn)))))
+             (make-dir "Slides" 'teaching
+                       (list (make-dir "cs135" 'teaching
+                                       (list (make-file "01-intro.pdf" 72244 'teaching)
+                                             (make-file "11-trees.pdf" 123124 'teaching)
+                                             (make-dir "system" 'root
+                                                       (list (make-dir "logs" 'teaching empty))))))))))
+;;A
+
+;;fsobject-template: FSObject -> Any 
+(define (fsobject-template fsobject)
+  (cond
+    [(file? fsobject) (... (file-name fsobject)...
+                           ... (file-size fsobject)...
+                           ... (file-owner fsobject)...)]
+    [(dir? fsobject) (... (dir-name fsobject)...
+                          ... (dir-owner fsobject)...
+                          ... (dir-contents fsobject)...)]))
+
+;;listof-fsobject-template: (listof FSObject) -> Any
+(define (listof-fsobject-template list-fsobject)
+  (cond
+    [(empty? list-fsobject) ...]
+    [else (... (first list-fsobject)
+               ... (listof-fsobject-template (rest list-fsobject)))]))
+
+
+     
+
+;; B
+;;(fsobject-name fsobject) produces the name of a fsobject  
+
+;;fsobject-name: FSObject -> Str
+
+;;Examples:
+(check-expect (fsobject-name (make-file "hello.txt" 32 'Dan))
+              "hello.txt")
+(check-expect (fsobject-name (make-dir "My Music" 'nobody empty))
+              "My Music")
+
+
+(define (fsobject-name fsobject)
+  (cond
+    [(file? fsobject) (file-name fsobject)]
+    [(dir? fsobject) (dir-name fsobject)]))
+
+;;Tests: 
+(check-expect (fsobject-name example-fs2)
+              "root")
+(check-expect (fsobject-name example-fs)
+              "root")
+(check-expect (fsobject-name (make-dir "Dan" 'dan (make-file "log.txt" 768 'dan)))
+              "Dan")
+(check-expect (fsobject-name (make-dir "hello.tx" 2 'Da))
+              "hello.tx")
+
+
+;; C
+
+;;(count-files fsobject) counts the number of files within the given fsobject
+;;count-files: FSObject -> Nat
+
+;;Examples:
+(check-expect (count-files example-fs) 6)
+(check-expect (count-files (make-file "README" 16 'me)) 1)
+
+(define (count-files fsobject)
+  (cond
+    [(file? fsobject) 1]
+    [else
+     (local[;;(count-files-in-dir files) counts the number of files
+            ;;within the given directory
+            ;;count-files-in-dir: Dir -> Nat 
+            (define (count-files-in-dir files)
+              (cond
+                [(empty? files) 0]
+                [else (+ (count-files (first files))
+                         (count-files-in-dir (rest files)))]))]
+       (count-files-in-dir (dir-contents fsobject)))]))
+
+;;Tests: 
+(check-expect (count-files (make-dir "Dan" 'dan (list (make-file "log.txt" 768 'dan)))) 1)
+(check-expect (count-files example-fs2) 1)    
+(check-expect (count-files example-fs3) 7)
+(check-expect (count-files example-fs4) 4)
+(check-expect (count-files example-fs5) 5)
+
+;; D
+
+;;(file-exists? fsobject path) determines whether a given list of strings
+;; is a valid path to a file in the fsobject tree
+
+;;file-exists?: FSObject (listof Str) -> Bool
+;;Examples: 
+(check-expect
+ (file-exists? example-fs
+               (list "root" "Slides" "cs135" "11-trees.pdf"))
+ true)
+;; This next example is false because it's a path to a Dir
+(check-expect (file-exists? example-fs (list "root" "Dan")) false)
+;; And this because it's not a valid path
+(check-expect (file-exists? example-fs (list "readme.txt")) false)
+(check-expect (file-exists? (make-dir "My Music" 'nobody empty)
+                            (list "My Music"))false)
+
+(define (file-exists? fsobject path)
+  (cond
+    [(file? fsobject) (and (string=? (file-name fsobject) (first path))
+                           (empty? (rest path)))]
+    ;;this is directory
+    [(and (string=? (dir-name fsobject) (first path))
+          (empty? (rest path))) false]
+    [(string=? (dir-name fsobject) (first path))
+     (local
+       [;;(find-dir list-fs path) determines whether a given list of strings
+        ;; is a valid path to a file in the directory
+
+        ;;find-dir: Dir -> Bool
+        (define (find-dir list-fs path)
+          (cond
+            [(empty? list-fs) false]
+            [(file-exists? (first list-fs) path) true]
+            [else (find-dir (rest list-fs) path)]))]
+        
+       (find-dir (dir-contents fsobject) (rest path)))]
+    [else false]))
+  
+;;Tests:
+(check-expect
+ (file-exists? example-fs2
+               (list "root" "Dan" "log.txt"))true)
+
+(check-expect
+ (file-exists? example-fs2
+               (list "root" "Dan"))false)
+
+(check-expect
+ (file-exists? example-fs
+               (list "root" "Slides" "cs135" "system"))false)
+
+(check-expect
+ (file-exists? example-fs3
+               (list "root" "hahahaha"))true)
+
+(check-expect
+ (file-exists? example-fs3
+               (list "root" "Dan" "music" "Thelonius Monk.mp3"))true)
+
+(check-expect
+ (file-exists? example-fs4
+               (list "root" "Dan" "log.txt"))false)
+
+(check-expect
+ (file-exists? example-fs4
+               (list "root" "Dan"))true)
+
+(check-expect (file-exists? (make-file "My Music" 'nobody empty)
+                            (list "My Music")) true)
+
+
+;; E
+
+;;(remove-empty fsobject) produces a new tree by removing all empty directories
+
+;;remove-empty: FSObject -> FSObject
+(check-expect (remove-empty (make-dir "root" 'root empty)) (make-dir "root" 'root empty))
+(check-expect (remove-empty (make-dir "root" 'root (list (make-dir "foo" 'root empty)))) 
+              (make-dir "root" 'root empty))
+
+(define (remove-empty fsobject)
+  (cond
+    [(file? fsobject) fsobject]
+    [else
+     (local
+       [;;(remove-empty-fs list-fs) removes all the empty directories within
+        ;;a given directory
+
+        ;;remove-empty-fs: Dir ->  FSObject
+        (define (remove-empty-fs list-fs)
+          (cond
+            [(empty? list-fs) empty]
+            [(file? (first list-fs))
+             (cons (first list-fs) (remove-empty-fs (rest list-fs)))]
+
+            [(and (dir? (first list-fs))
+                  (empty? (dir-contents (first list-fs))))
+                  empty]
+            
+            [(and (dir? (first list-fs))
+                  (list? (dir-contents (first list-fs))))
+                  (cons (remove-empty (first list-fs)) (remove-empty-fs (rest list-fs)))]))]
+       (make-dir (dir-name fsobject) (dir-owner fsobject)
+                 (remove-empty-fs (dir-contents fsobject))))]))
+
+
+
+;;Tests:
+(check-expect (remove-empty example-fs2) (make-dir "root" 'root
+                                                   (list
+                                                    (make-dir "Dan" 'dan
+                                                              (list (make-file "log.txt" 768 'dan))))))
+
+(check-expect (remove-empty example-fs4) 
+              example-fs4)
+
+(check-expect (remove-empty example-fs)
+              (make-dir  "root" 'root
+               (list
+                (make-dir "Dan" 'dan
+                 (list
+                  (make-file "log.txt" 768 'dan)
+                  (make-file "profile.jpg" 60370 'dan)
+                  (make-dir "music" 'dan
+                   (list
+                    (make-file "Thelonius Monk.mp3" 92227584 'dan)))))
+                (make-dir "Slides" 'teaching
+                 (list
+                  (make-dir "cs135" 'teaching
+                   (list
+                    (make-file "01-intro.pdf" 72244 'teaching)
+                    (make-file "11-trees.pdf" 123124 'teaching)
+                    (make-dir "system" 'root empty)))))
+                (make-file "vmlinuz" 30 'root))))
+              
+(check-expect (remove-empty example-fs5)
+              (make-dir  "root" 'root
+               (list
+                (make-dir "Dan" 'dan
+                 (list
+                  (make-file "log.txt" 768 'dan)
+                  (make-file "profile.jpg" 60370 'dan)
+                  (make-dir "music" 'dan
+                   (list
+                    (make-file "Thelonius Monk.mp3" 92227584 'dannn)))))
+                (make-dir "Slides" 'teaching
+                 (list
+                  (make-dir "cs135" 'teaching
+                   (list
+                    (make-file "01-intro.pdf" 72244 'teaching)
+                    (make-file "11-trees.pdf" 123124 'teaching)
+                    (make-dir "system" 'root empty))))))))
+
+(check-expect (remove-empty (make-file "My Music" 'nobody 'empty))
+              (make-file "My Music" 'nobody 'empty))
+    
+;; F
+
+;;(disk-hog fsobject) produces the owner that owns the largest file
+;;within the given fsobject
+
+;;disk-hog: FSObject -> (Anyof false Sym)
+
+;;Example: 
+(check-expect (disk-hog example-fs) 'dan)
+(check-expect (disk-hog (make-dir "secrets" 'cia empty)) false)
+(check-expect (disk-hog (make-file "secrets" 0 'cia)) 'cia)
+
+(define (disk-hog fsobject)
+  (cond
+    [(file? fsobject) (file-owner fsobject)]
+    [else
+     (local
+       [;;(find-max-file list-fs acc-size acc-owner) produces a list containing
+        ;; the size and owner of the largest file within a given directory
+
+        ;;find-max-file: Dir Nat Bool -> (Anyof false (list Nat Sym))
+        (define (find-max-file list-fs acc-size acc-owner)
+          (cond
+            [(empty? list-fs) (list acc-size acc-owner)]
+            [(and (file? (first list-fs))
+                  (> (file-size (first list-fs)) acc-size))
+             (find-max-file (rest list-fs) (file-size (first list-fs))
+                            (file-owner (first list-fs)))]
+            [(and (dir? (first list-fs))
+                  (> (first
+                      (find-max-file
+                       (dir-contents (first list-fs)) acc-size acc-owner))
+                     acc-size))
+             (find-max-file (rest list-fs)
+                            (first (find-max-file
+                                    (dir-contents (first list-fs)) acc-size acc-owner))
+                            (second (find-max-file
+                                     (dir-contents (first list-fs)) acc-size acc-owner)))]
+            [else (find-max-file (rest list-fs) acc-size acc-owner)]))]
+       (second (find-max-file (dir-contents fsobject) -1 false)))]))
+
+;;Tests:
+(check-expect (disk-hog example-fs2) 'dan)
+(check-expect (disk-hog example-fs3) 'dan)
+(check-expect (disk-hog example-fs4) 'dan)
+(check-expect (disk-hog example-fs5) 'dannn)
+
+
+;; G
+
+;;(owned-by hi owner) produces a list of paths to all the fsobject owned by
+;;the inputted owner
+
+;;owned-by: FSObject Sym -> (listof (listof Str))
+
+;;Examples: 
+(check-expect (owned-by example-fs 'root)
+              (list (list "root")
+                    (list "root" "Slides" "cs135" "system")
+                    (list "root" "vmlinuz")))
+
+(check-expect (owned-by example-fs 'cia) empty)
+(check-expect (owned-by (make-file "My Music" 'nobody 'empty) 'cia) empty)
+(check-expect (owned-by (make-file "My Music" 'nobody 'cia) 'cia) (list (list "My Music")))
+
+
+(define (owned-by hi owner)
+  (local
+    [;; (file-owned hi path owner) finds out the file name of
+     ;; the path to the given html belonging to the given user
+
+     ;;file-owned: FSObject (listof str) Sym -> (Anyof empty (listof str))
+     (define (file-owned hi path owner)
+       (cond
+         [(symbol=? (file-owner hi) owner)
+          (list (append path (list (file-name hi))))]
+         [else empty]))]
+
+    (cond
+      [(file? hi)
+       (file-owned hi empty owner)]
+      [else
+       (local
+         [;;(dir-owned list-hi path owner acc) finds out the directory name of
+          ;; the path to the given fsobject belonging to the given user
+
+          ;;dir-owned: (listof FSObject) (Anyof empty (listof str))
+          ;; Sym (Anyof empty (listof (listof Str))) -> (listof (listof Str))
+          (define (dir-owned list-hi path owner acc)
+            (cond
+              [(empty? list-hi) acc]
+              [(file? (first list-hi))
+               (cond
+                 [(empty? (file-owned (first list-hi) path owner))
+                  (dir-owned (rest list-hi) path owner acc)]
+                 [else
+                  (dir-owned (rest list-hi)
+                             path owner
+                             (append acc
+                                     (file-owned (first list-hi) path owner)))])]
+              
+              [(dir? (first list-hi))
+               (cond
+                 [(symbol=? owner (dir-owner (first list-hi)))
+                  (dir-owned (rest list-hi)
+                             (append path
+                                     (list (dir-name (first list-hi))))
+                             owner (append acc
+                                           (list
+                                            (append path
+                                                    (list
+                                                     (dir-name (first list-hi)))))
+                                           (dir-owned (dir-contents (first list-hi))
+                                                      (append path
+                                                              (list
+                                                               (dir-name (first list-hi))))
+                                                      owner empty)))]
+                 [else
+                  (dir-owned (rest list-hi) path
+                             owner (append acc 
+                                           (dir-owned (dir-contents (first list-hi))
+                                                      (append path
+                                                              (list (dir-name
+                                                                     (first list-hi))))
+                                                      owner empty)))])]))]
+         (cond
+           [(symbol=? (dir-owner hi) owner)
+            (dir-owned (dir-contents hi) (list (dir-name hi)) owner
+                       (list (list (dir-name hi))))]
+           [else
+            (dir-owned (dir-contents hi) (list (dir-name hi)) owner
+                       empty)]))])))
+
+;;Tests:
+(check-expect (owned-by (make-dir "root" 'root (list (make-dir "foo" 'root empty)))
+                        'haha) empty)
+(check-expect (owned-by (make-dir "root" 'root (list (make-dir "foo" 'root empty)))
+                        'root) (list (list "root")
+                                     (list "root" "foo")))
+     
+(check-expect (owned-by example-fs 'teaching)
+              (list
+               (list "root" "Slides")
+               (list "root" "Slides" "cs135")
+               (list
+                "root" "Slides" "cs135" "01-intro.pdf")
+               (list
+                "root" "Slides" "cs135" "11-trees.pdf")
+               (list
+                "root" "Slides" "cs135" "system" "logs")))    
+  
+;; H (bonus)
+
+;;(remove-empty/cascade fsobject) produces a new tree with all
+;; empty directories removed and the result must cascade
+
+;;remove-empty/cascade: FSObject -> (Anyof false FSObject)
+
+;;Examples: 
+(check-expect (remove-empty/cascade (make-dir "root" 'root empty))
+              false)
+
+(check-expect
+ (remove-empty/cascade
+  (make-dir "root" 'root
+            (list (make-dir "a" 'root
+                            (list (make-dir "b" 'root empty)))
+                  (make-file "c" 120 'root))))
+ (make-dir "root" 'root (list (make-file "c" 120 'root))))
+
+          
+(define (remove-empty/cascade fsobject)
+  (cond
+    [(file? fsobject) fsobject]
+    [(empty? (dir-contents fsobject)) false]
+    [else
+     (local
+       [;;(remove-empty-fs list-fs) removes all the empty directories within
+        ;;a given directory
+
+        ;;remove-empty-fs: Dir -> FSObject
+        (define (remove-empty-fs list-fs)
+          (cond
+            [(empty? list-fs) empty]
+            [(file? (first list-fs))
+             (cons (first list-fs) (remove-empty-fs (rest list-fs)))]
+
+            [(and (dir? (first list-fs))
+                  (empty? (dir-contents (first list-fs))))
+                  empty]
+            
+            [(or (empty? (dir-contents (first list-fs)))
+                 (empty? (remove-empty-fs (dir-contents(first list-fs)))))
+             (remove-empty-fs (rest list-fs))]
+            
+            [(and (dir? (first list-fs))
+                  (list? (dir-contents (first list-fs))))
+                  (cons (remove-empty/cascade (first list-fs)) (remove-empty-fs (rest list-fs)))]
+            
+            
+             ))]
+       (make-dir (dir-name fsobject) (dir-owner fsobject)
+                 (remove-empty-fs (dir-contents fsobject))))]))
+
+;;Tests:
+(check-expect (remove-empty/cascade example-fs)
+              (make-dir "root" 'root
+                        (list
+                         (make-dir "Dan" 'dan
+                                   (list (make-file "log.txt" 768 'dan)
+                                         (make-file "profile.jpg" 60370 'dan)
+                                         (make-dir "music" 'dan
+                                                   (list (make-file "Thelonius Monk.mp3" 92227584 'dan)))))
+                         (make-dir "Slides" 'teaching
+                                   (list (make-dir "cs135" 'teaching
+                                                   (list (make-file "01-intro.pdf" 72244 'teaching)
+                                                         (make-file "11-trees.pdf" 123124 'teaching)
+                                                         ))))
+                         (make-file "vmlinuz" 30 'root))))
+
+(check-expect (remove-empty/cascade example-fs4) example-fs4)
+(check-expect (remove-empty/cascade (make-file "root" 'root 'empty))
+              (make-file "root" 'root 'empty))
+
+(check-expect (remove-empty/cascade example-fs5)
+              (make-dir "root" 'root
+                        (list
+                         (make-dir "Dan" 'dan
+                                   (list (make-file "log.txt" 768 'dan)
+                                         (make-file "profile.jpg" 60370 'dan)
+                                         (make-dir "music" 'dan
+                                                   (list (make-file "Thelonius Monk.mp3" 92227584 'dannn)))))
+                         (make-dir "Slides" 'teaching
+                                   (list (make-dir "cs135" 'teaching
+                                                   (list (make-file "01-intro.pdf" 72244 'teaching)
+                                                         (make-file "11-trees.pdf" 123124 'teaching)
+                                                         )))))))
